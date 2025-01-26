@@ -1,0 +1,49 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.1'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'br.com.udemy'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot Web Starter (MVC)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Spring Boot WebFlux Starter (para programação reativa)
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// Springdoc OpenAPI para documentação automática de APIs (com suporte ao Spring MVC)
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+	// Spring Boot MongoDB Starter (para integração com MongoDB)
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+	// Testes (unitários e reativos)
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+
+	// Runtime de testes para o JUnit Platform Launcher
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
