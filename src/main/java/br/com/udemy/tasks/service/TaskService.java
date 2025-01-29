@@ -2,6 +2,7 @@ package br.com.udemy.tasks.service;
 
 import br.com.udemy.tasks.controller.dto.TaskDTO;
 import br.com.udemy.tasks.exception.TaskNotFoundException;
+import br.com.udemy.tasks.model.Address;
 import br.com.udemy.tasks.model.Task;
 import br.com.udemy.tasks.repository.TaskCustomRepository;
 import br.com.udemy.tasks.repository.TaskRepository;
@@ -20,10 +21,12 @@ public class TaskService {
   private final TaskRepository taskRepository;
   private final TaskCustomRepository taskCustomRepository;
   private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+  private final AddressService addressService;
 
-    public TaskService( TaskRepository taskRepository, TaskCustomRepository taskCustomRepository ) {
+    public TaskService( TaskRepository taskRepository, TaskCustomRepository taskCustomRepository, AddressService addressService ) {
         this.taskRepository = taskRepository;
         this.taskCustomRepository = taskCustomRepository;
+        this.addressService = addressService;
     }
 
     public Mono<Task> insert( Task task){
@@ -52,6 +55,21 @@ public class TaskService {
 
     public Mono<Task> doError(){
         return Mono.error(RuntimeException::new);
+    }
+
+    public Mono<Task> start(String id, String zipCode){
+        return taskRepository.findById( id )
+                .zipWhen(it -> addressService.getAddress(zipCode))
+                .flatMap(it -> updateAddress(it.getT1(), it.getT2()))
+                .map(Task::start)
+                .flatMap(taskRepository::save)
+                .switchIfEmpty(Mono.error(TaskNotFoundException::new))
+                .doOnError(e -> LOGGER.error("Error during start task. ID: {}", id, e));
+    }
+
+    private Mono<Task> updateAddress(Task task, Address address) {
+        return Mono.just(task)
+                .map(it -> task.updateAddress(address));
     }
 
     private Mono<Task> save(Task task){

@@ -15,10 +15,11 @@ public class TaskDTOConverter {
                 .map(source -> {
                     TaskDTO taskDTO = new TaskDTO();
                     taskDTO.setId(source.getId());
-                    taskDTO.setTitle(task.getTitle());
-                    taskDTO.setDescription(task.getDescription());
-                    taskDTO.setState(task.getState());
-                    taskDTO.setPriority(task.getPriority());
+                    taskDTO.setTitle(source.getTitle());
+                    taskDTO.setDescription(source.getDescription());
+                    taskDTO.setState(source.getState());
+                    taskDTO.setPriority(source.getPriority());
+                    taskDTO.setAddress(source.getAddress());
                     return taskDTO;
                 })
                 .orElse(null);
