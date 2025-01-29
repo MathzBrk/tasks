@@ -24,10 +24,9 @@ dependencies {
 	// Spring Boot WebFlux Starter (para programação reativa)
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	// Springdoc OpenAPI para documentação automática de APIs (com suporte ao Spring MVC)
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3'
 
-	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
